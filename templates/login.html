@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Iniciar sessão | ReFind{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+{% endblock %}
+{% block content %}
+
+
+<section class="auth-page">
+    <div class="auth-card">
+        <div class="auth-heading">
+            <span class="auth-icon">↪</span>
+            <h1>Bem-vindo de volta</h1>
+            <p>Inicia sessão para acompanhar os anúncios e mensagens.</p>
+        </div>
+
+        <form method="POST" action="{{ url_for('login') }}" class="auth-form">
+            <div class="form-group">
+                <label for="email">E-mail</label>
+                <input type="email" id="email" name="email" placeholder="exemplo@email.com" value="{{ request.form.get('email', '') }}" required autocomplete="email">
+            </div>
+            <div class="form-group">
+                <label for="password">Palavra-passe</label>
+                <input type="password" id="password" name="password" placeholder="Introduz a tua palavra-passe" required autocomplete="current-password">
+            </div>
+            <button type="submit" class="auth-submit">Iniciar sessão</button>
+        </form>
+
+        <p class="auth-footer">Ainda não tem uma conta? <a href="{{ url_for('registar') }}">Criar conta</a></p>
+    </div>
+</section>
+{% endblock %}

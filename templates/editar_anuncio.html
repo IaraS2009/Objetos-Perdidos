@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}Editar anúncio | ReFind{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/editar_anuncio.css') }}">
+{% endblock %}
+{% block content %}
+
+
+<section class="form-page">
+    <div class="form-card">
+        <div class="form-heading">
+            <span class="form-icon">✎</span>
+            <h1>Editar anúncio</h1>
+            <p>Atualiza os dados do anúncio.</p>
+        </div>
+
+        <form class="announcement-form" method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="titulo">Título do anúncio</label>
+                <input id="titulo" name="titulo" type="text" required value="{{ anuncio.titulo }}">
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="tipo">Tipo de anúncio</label>
+                    <select id="tipo" name="tipo" required>
+                        <option value="perdido" {% if anuncio.tipo =='perdido' %}selected{% endif %}>Perdido</option>
+                        <option value="encontrado" {% if anuncio.tipo =='encontrado' %}selected{% endif %}>Encontrado</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="estado">Estado</label>
+                    <select id="estado" name="estado" required>
+                        {% for valor, texto in [('perdido','Perdido'),('encontrado','Encontrado'),('em_andamento','Em andamento'),('resolvido','Resolvido')] %}
+                        <option value="{{ valor }}" {% if anuncio.estado == valor %}selected{% endif %}>{{ texto }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="data_ocorrencia">Data da ocorrência</label>
+                <input id="data_ocorrencia" name="data_ocorrencia" type="date" required value="{{ anuncio.data_ocorrencia.strftime('%Y-%m-%d') }}">
+            </div>
+            <div class="form-group">
+                <label for="local">Local</label>
+                <input id="local" name="local" type="text" required value="{{ anuncio.local }}">
+            </div>
+            <div class="form-group">
+                <label for="descricao">Descrição</label>
+                <textarea id="descricao" name="descricao" rows="6">{{ anuncio.descricao }}</textarea>
+            </div>
+            <div class="form-group">
+                <label for="imagem">Substituir fotografia <span>(opcional)</span></label>
+                <input id="imagem" name="imagem" type="file" accept="image/*">
+            </div>
+            <button class="form-submit" type="submit">Guardar alterações</button>
+        </form>
+    </div>
+</section>
+{% endblock %}

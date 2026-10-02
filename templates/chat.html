@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}Conversa | ReFind{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat.css') }}">
+{% endblock %}
+{% block content %}
+
+
+<section class="chat-page">
+    <div class="chat-header">
+        {% if anuncio %}
+            <a href="{{ url_for('anuncio', anuncio_id=anuncio.id) }}" class="chat-back">Voltar ao anúncio</a>
+            <h1>{{ anuncio.titulo }}</h1>
+            {% if conversa.dono_id == utilizador_atual.id %}
+                {% set outro = conversa.utilizador %}
+            {% else %}
+                {% set outro = conversa.dono %}
+            {% endif %}
+            <p>Conversa com <strong>{{ outro.nome }}</strong></p>
+        {% else %}
+            <h1>Conversa privada</h1>
+            <p>Esta conversa não está associada a nenhum anúncio.</p>
+        {% endif %}
+    </div>
+
+    <div class="chat-box">
+        <div class="messages-list">
+            {% if mensagens %}
+                {% for mensagem in mensagens %}
+                <div class="message {% if mensagem.autor_id == utilizador_atual.id %}message-own{% else %}message-other{% endif %}">
+                    <div class="message-author">
+                        {% if mensagem.autor_id == utilizador_atual.id %}
+                            Tu
+                        {% else %}
+                            {{ mensagem.autor.nome }}
+                        {% endif %}
+                    </div>
+
+                    {% if mensagem.texto %}
+                        <p>{{ mensagem.texto }}</p>
+                    {% endif %}
+
+                    {% if mensagem.imagem %}
+                        <img src="{{ url_for('static', filename='imagens/' ~ mensagem.imagem) }}" alt="Imagem enviada">
+                    {% endif %}
+                    <small>{{ mensagem.data_envio.strftime('%d/%m/%Y %H:%M') }}</small>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="chat-empty">Ainda não existem mensagens. Envia a primeira mensagem.</div>
+            {% endif %}
+        </div>
+
+        <form class="chat-form" method="POST" enctype="multipart/form-data">
+            <textarea name="texto" placeholder="Escreve a tua mensagem..." rows="3"></textarea>
+            <div class="chat-form-bottom">
+                <label class="file-label">📎 Anexar imagem<input type="file" name="imagem" accept="image/*"></label>
+                <button type="submit">Enviar mensagem</button>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,168 @@
+ .messages-page {
+    max-width: 1050px;
+    margin: 0 auto;
+    padding: 3rem 1.25rem;
+}
+
+.messages-heading {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.eyebrow {
+    margin: 0 0 .4rem;
+    color: #b91c1c;
+    font-size: .8rem;
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+}
+
+.messages-heading h1 {
+    margin: 0 0 .6rem;
+    color: #7f1d1d;
+    font-size: 2.2rem;
+}
+
+.messages-heading p {
+    margin: 0;
+    color: #6b7280;
+}
+
+.back-button {
+    padding: .75rem 1rem;
+    border-radius: 10px;
+    color: #b91c1c;
+    background: #fee2e2;
+    text-decoration: none;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.conversations-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.conversation-card {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 1.25rem;
+    border: 1px solid #fee2e2;
+    border-radius: 18px;
+    background: #ffffff;
+    box-shadow: 0 8px 25px rgba(127, 29, 29, .07);
+    transition: transform .2s, box-shadow .2s;
+}
+
+.conversation-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(127, 29, 29, .12);
+}
+
+.conversation-icon {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 58px;
+    height: 58px;
+    border-radius: 16px;
+    background: #fff1f2;
+    font-size: 1.7rem;
+}
+
+.conversation-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.conversation-info h2 {
+    margin: 0 0 .35rem;
+    color: #3f1d1d;
+    font-size: 1.15rem;
+}
+
+.conversation-location,
+.conversation-role {
+    margin: .25rem 0;
+    color: #6b7280;
+}
+
+.conversation-role {
+    color: #991b1b;
+    font-size: .9rem;
+    font-weight: 600;
+}
+
+.conversation-info small {
+    display: block;
+    margin-top: .5rem;
+    color: #9ca3af;
+}
+
+.conversation-button {
+    display: inline-block;
+    padding: .8rem 1rem;
+    border-radius: 10px;
+    color: #ffffff;
+    background: #b91c1c;
+    text-decoration: none;
+    font-weight: 700;
+    white-space: nowrap;
+    transition: background .2s;
+}
+
+.conversation-button:hover {
+    background: #991b1b;
+}
+
+.messages-empty {
+    padding: 4rem 1.5rem;
+    border: 1px dashed #fca5a5;
+    border-radius: 20px;
+    background: #fff7f7;
+    text-align: center;
+}
+
+.empty-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.messages-empty h2 {
+    margin: 0 0 .6rem;
+    color: #7f1d1d;
+}
+
+.messages-empty p {
+    max-width: 500px;
+    margin: 0 auto 1.5rem;
+    color: #6b7280;
+    line-height: 1.6;
+}
+
+@media (max-width: 700px) {
+    .messages-heading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .conversation-card {
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .conversation-info {
+        width: calc(100% - 75px);
+    }
+
+    .conversation-button {
+        width: 100%;
+        text-align: center;
+    }
+}

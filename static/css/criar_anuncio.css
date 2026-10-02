@@ -1,0 +1,115 @@
+.form-page {
+    min-height: calc(100vh - 190px);
+    padding: 55px 20px;
+    background: #fffafa;
+}
+.form-card {
+    width: min(760px, 100%);
+    margin: 0 auto;
+    padding: 38px;
+    background: #ffffff;
+    border: 1px solid #f3d4d7;
+    border-radius: 22px;
+    box-shadow: 0 15px 45px rgba(127, 29, 29, .10);
+}
+.form-heading {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.form-icon {
+    display: inline-grid;
+    place-items: center;
+    width: 58px;
+    height: 58px;
+    border-radius: 18px;
+    background: #fee2e2;
+    color: #b91c1c;
+    font-size: 2rem;
+}
+
+.form-heading h1 {
+    margin: 12px 0 8px;
+    color: #7f1d1d;
+    font-size: 2rem;
+}
+
+.form-heading p {
+    color: #77696b;
+}
+
+.announcement-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    color: #3f1d1d;
+    font-weight: 700;
+}
+
+.form-group label span {
+    color: #8b6b6b;
+    font-weight: 400;
+}
+
+.form-group input, .form-group select, .form-group textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 13px 14px;
+    border: 1px solid #e9bfc4;
+    border-radius: 11px;
+    background: #fffafa;
+    color: #3f1d1d; font: inherit;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 140px;
+}
+
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+    outline: none;
+    border-color: #dc2626;
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(220, 38, 38, .12);
+}
+
+.form-submit {
+    border: 0;
+    border-radius: 12px;
+    padding: 14px 20px;
+    background: #b91c1c;
+    color: white;
+    font: inherit;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.form-submit:hover {
+    background: #991b1b;
+}
+
+
+@media (max-width: 650px) {
+    .form-card {
+        padding: 25px 18px;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+}

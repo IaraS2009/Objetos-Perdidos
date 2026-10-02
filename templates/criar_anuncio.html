@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Criar anúncio | ReFind{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/criar_anuncio.css') }}">
+{% endblock %}
+{% block content %}
+
+
+<section class="form-page">
+    <div class="form-card">
+        <div class="form-heading">
+            <span class="form-icon">＋</span>
+            <h1>Criar anúncio</h1>
+            <p>Publica informação sobre um objeto perdido ou encontrado.</p>
+        </div>
+
+        <form class="announcement-form" method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="titulo">Título do anúncio</label>
+                <input id="titulo" name="titulo" type="text" required placeholder="Ex.: Mala preta">
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="tipo">Tipo de anúncio</label>
+                    <select id="tipo" name="tipo" required>
+                        <option value="">Seleciona</option>
+                        <option value="perdido">Perdido</option>
+                        <option value="encontrado">Encontrado</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="data_ocorrencia">Data da ocorrência</label>
+                    <input id="data_ocorrencia" name="data_ocorrencia" type="date" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="local">Local</label>
+                <input id="local" name="local" type="text" required placeholder="Ex.: Lisboa, Gare do Oriente">
+            </div>
+            <div class="form-group">
+                <label for="descricao">Descrição <span>(opcional)</span></label>
+                <textarea id="descricao" name="descricao" rows="6" placeholder="Descreve o objeto, a cor, marcas ou outros detalhes..."></textarea>
+            </div>
+            <div class="form-group">
+                <label for="imagem">Fotografia <span>(opcional)</span></label>
+                <input id="imagem" name="imagem" type="file" accept="image/*">
+            </div>
+            <button class="form-submit" type="submit">Publicar anúncio</button>
+        </form>
+    </div>
+</section>
+{% endblock %}

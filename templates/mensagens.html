@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}Mensagens | ReFind{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/mensagens.css') }}">
+{% endblock %}
+{% block content %}
+
+
+<section class="messages-page">
+    <div class="messages-heading">
+        <div>
+            <p class="eyebrow">Comunicação</p>
+            {% if anuncio %}
+            <h1>Mensagens de "{{ anuncio.titulo }}"</h1>
+            <p>Consulta as conversas relacionadas com este anúncio.</p>
+            {% else %}
+            <h1>As minhas mensagens</h1>
+            <p>Consulta e continua as tuas conversas no ReFind.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    {% if conversas %}
+    <div class="conversations-list">
+        {% for conversa in conversas %}
+        <article class="conversation-card">
+            <div class="conversation-icon">💬</div>
+            <div class="conversation-info">
+                <h2>
+                    {% if conversa.anuncio %}
+                    {{ conversa.anuncio.titulo }}
+                    {% else %}
+                    Conversa #{{ conversa.id }}
+                    {% endif %}
+                </h2>
+                <p class="conversation-location">
+                    {% if conversa.anuncio %}
+                    {{ conversa.anuncio.local }}
+                    {% else %}
+                    Conversa privada
+                    {% endif %}
+                </p>
+                <p class="conversation-role">
+                    {% if conversa.dono_id == utilizador_atual.id %}
+                    Interessado no teu anúncio
+                    {% else %}
+                    Conversa com o dono do anúncio
+                    {% endif %}
+                </p>
+                <small>Criada em {{ conversa.data_criacao.strftime('%d/%m/%Y %H:%M') }}</small>
+            </div>
+            <a class="conversation-button" href="{{ url_for('chat', conversa_id=conversa.id) }}">Abrir conversa</a>
+        </article>
+        {% endfor %}
+    </div>
+
+    {% else %}
+    <div class="messages-empty">
+        <div class="empty-icon">💬</div>
+        <h2>Ainda não tens conversas</h2>
+        {% if anuncio %}
+        <p>Ainda não existem mensagens sobre este anúncio.</p>
+        {% else %}
+        <p>Quando contactares alguém ou receberes uma mensagem, ela aparecerá aqui.</p>
+        {% endif %}
+        <a class="conversation-button" href="{{ url_for('home') }}">Explorar anúncios</a>
+    </div>
+    {% endif %}
+</section>
+{% endblock %}

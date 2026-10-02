@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}O meu perfil | ReFind{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/perfil.css') }}">
+{% endblock %}
+{% block content %}
+
+
+<section class="profile-page">
+    <div class="profile-header">
+        <div class="profile-avatar">{{ utilizador.nome[:1]|upper }}</div>
+        <div>
+            <p class="eyebrow">A minha conta</p>
+            <h1>{{ utilizador.nome }}</h1>
+            <p>{{ utilizador.email }}</p>
+        </div>
+    </div>
+    <div class="profile-actions">
+        <a class="profile-button" href="{{ url_for('criar_anuncio') }}">+ Criar anúncio</a>
+        <a class="profile-button secondary" href="{{ url_for('mensagens') }}">Ver mensagens</a>
+    </div>
+
+    <div class="profile-section">
+        <h2>Os meus anúncios</h2>
+        {% if anuncios %}
+        <div class="profile-grid">
+            {% for item in anuncios %}
+            <article class="profile-item">
+                {% if item.imagem %}
+                    <img src="{{ url_for('static', filename='imagens/' ~ item.imagem) }}" alt="{{ item.titulo }}">
+                {% else %}
+                    <div class="profile-placeholder">Sem imagem</div>
+                {% endif %}
+
+                <div class="profile-item-content">
+                    <span class="item-type">{{ item.tipo|capitalize }}</span>
+                    <h3>{{ item.titulo }}</h3>
+                    <p>{{ item.local }}</p>
+                    <a href="{{ url_for('anuncio', anuncio_id=item.id) }}">Ver anúncio</a>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+
+        {% else %}
+        <div class="empty-profile">
+            <h3>Ainda não criaste anúncios</h3>
+            <p>Publica um anúncio para começares a procurar ou devolver objetos.</p>
+            <a class="profile-button" href="{{ url_for('criar_anuncio') }}">Criar o primeiro anúncio</a>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

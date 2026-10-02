@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}{{ anuncio.titulo }} | ReFind{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/anuncio.css') }}">
+{% endblock %}
+{% block content %}
+
+
+<section class="announcement-page">
+    <a class="back-link" href="{{ url_for('home') }}">Voltar aos anúncios</a>
+    <article class="announcement-card">
+        <div class="announcement-media">
+            {% if anuncio.imagem %}
+                <img src="{{ url_for('static', filename='imagens/' ~ anuncio.imagem) }}" alt="{{ anuncio.titulo }}">
+            {% else %}
+                <div class="announcement-placeholder">Sem imagem disponível</div>
+            {% endif %}
+        </div>
+
+        <div class="announcement-content">
+            <div class="announcement-tags">
+                <span class="announcement-type type-{{ anuncio.tipo }}">
+                    {{ anuncio.tipo|capitalize }}
+                </span>
+                <span class="status-badge status-{{ anuncio.estado }}">
+                    {{ anuncio.estado|replace('_', ' ')|capitalize }}
+                </span>
+            </div>
+            <h1>{{ anuncio.titulo }}</h1>
+            <p class="announcement-description">{{ anuncio.descricao }}</p>
+            <div class="announcement-details">
+                <p><strong>Local:</strong> {{ anuncio.local }}</p>
+                <p><strong>Data:</strong> {{ anuncio.data_ocorrencia.strftime('%d/%m/%Y') }}</p>
+            </div>
+
+            {% if utilizador_atual %}
+                {% if utilizador_atual.id == anuncio.dono_id %}
+                <div class="owner-detail-actions">
+                    <a class="announcement-button" href="{{ url_for('contactar_dono', anuncio_id=anuncio.id) }}">Ver mensagens</a>
+                    <a class="announcement-button edit-button" href="{{ url_for('editar_anuncio', anuncio_id=anuncio.id) }}">Editar</a>
+                    <a class="announcement-button delete-button" href="#confirmacao-detalhe">Eliminar</a>
+                </div>
+
+                <div id="confirmacao-detalhe" class="modal-overlay">
+                    <div class="confirm-modal">
+                        <h2>Eliminar anúncio?</h2>
+                        <p>Tens a certeza de que queres eliminar este anúncio?</p>
+                        <div class="modal-actions">
+                            <a class="modal-button cancel-button" href="#">Cancelar</a>
+                            <form method="POST" action="{{ url_for('eliminar_anuncio', anuncio_id=anuncio.id) }}">
+                                <button type="submit" class="modal-button delete-button">Eliminar</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                {% else %}
+                    <a class="announcement-button" href="{{ url_for('contactar_dono', anuncio_id=anuncio.id) }}">Contactar dono</a>
+                {% endif %}
+            {% else %}
+                <a class="announcement-button" href="{{ url_for('login') }}">Iniciar sessão para contactar</a>
+            {% endif %}
+        </div>
+    </article>
+</section>
+{% endblock %}

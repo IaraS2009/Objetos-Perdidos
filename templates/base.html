@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}ReFind{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+    <header class="site-header">
+        <div class="container header-content">
+            <a href="{{ url_for('home') }}" class="brand">
+                <img src="{{ url_for('static', filename='imagens/logo.png') }}" alt="Logótipo ReFind"  class="brand-logo">
+            </a>
+
+            <button class="menu-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" onclick="document.querySelector('.main-nav').classList.toggle('is-open'); this.setAttribute('aria-expanded', document.querySelector('.main-nav').classList.contains('is-open'));">☰</button>
+            <nav class="main-nav">
+                <a href="{{ url_for('home') }}" class="nav-link">Início</a>
+                {% if utilizador_atual %}
+                    <a href="{{ url_for('criar_anuncio') }}" class="nav-link">Criar anúncio</a>
+                    <a href="{{ url_for('mensagens') }}" class="nav-link">Mensagens</a>
+                    <a href="{{ url_for('perfil') }}" class="nav-link">Perfil</a>
+                    <a href="{{ url_for('logout') }}" class="nav-link nav-link-outline">Sair</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}" class="nav-link">Iniciar sessão</a>
+                    <a href="{{ url_for('registar') }}" class="nav-button">Criar conta</a>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <section class="flash-area container">
+                {% for category, message in messages %}
+                    <div class="flash-message flash-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </section>
+        {% endif %}
+    {% endwith %}
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-content">
+            <div>
+                <a href="{{ url_for('home') }}" class="footer-brand">ReFind</a>
+                <p>Perdeste ou encontraste? ReFind.</p>
+            </div>
+            <p class="footer-copy">&copy; {{ current_year|default(2026) }} ReFind - Todos os direitos reservados.</p>
+        </div>
+    </footer>
+</body>
+</html>

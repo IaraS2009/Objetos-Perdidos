@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+{% block title %}Início | ReFind{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+{% endblock %}
+{% block content %}
+
+<section class="home-hero">
+    <div class="hero-overlay"></div>
+    <div class="container hero-content">
+        <div class="hero-text">
+            <span class="hero-tag">A tua plataforma de objetos perdidos</span>
+            <h1>Encontra o que<br><span>perdeste.</span> Devolve<br>o que encontraste.</h1>
+            <p>No ReFind, pessoas ajudam pessoas a reencontrar objetos perdidos e a devolver aquilo que foi encontrado.</p>
+
+            <div class="hero-actions">
+                <a href="#anuncios" class="button button-primary">Explorar anúncios</a>
+                {% if utilizador_atual %}
+                    <a href="{{ url_for('criar_anuncio') }}" class="button button-light">Criar anúncio</a>
+                {% else %}
+                    <a href="{{ url_for('registar') }}" class="button button-light">Junta-te ao ReFind</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="intro-section container">
+    <div>
+        <span class="section-kicker">Comunidade ReFind</span>
+        <h2>Objetos perdidos.<br><span>Histórias reencontradas.</span></h2>
+    </div>
+    <p class="intro-description">Consulta os anúncios publicados pela comunidade. Talvez alguém tenha encontrado aquilo que procuras, ou talvez sejas tu a pessoa que pode ajudar alguém.</p>
+</section>
+
+<section class="search-section container" aria-label="Pesquisar anúncios">
+    <form class="search-form" method="GET" action="{{ url_for('home') }}">
+        <input type="search" name="q" value="{{ pesquisa|default('') }}" placeholder="Pesquisar anúncios... Ex.: mala" aria-label="Pesquisar anúncios">
+        <button type="submit">Pesquisar</button>
+        {% if pesquisa %}
+            <a class="clear-search" href="{{ url_for('home') }}">Limpar</a>
+        {% endif %}
+    </form>
+
+    {% if pesquisa %}
+        <p class="search-result-text">Resultados para: <strong>{{ pesquisa }}</strong></p>
+    {% endif %}
+</section>
+
+<section class="announcements-section container" id="anuncios">
+    <div class="section-heading">
+        <div>
+            <span class="section-kicker">Publicações recentes</span>
+            <h2>Anúncios da comunidade</h2>
+        </div>
+        {% if utilizador_atual %}
+            <a href="{{ url_for('criar_anuncio') }}" class="text-link">+ Novo anúncio</a>
+        {% endif %}
+    </div>
+
+    {% if anuncios %}
+        <div class="announcement-grid">
+
+            {% for anuncio in anuncios %}
+                <article class="announcement-card">
+
+                    <a href="{{ url_for('anuncio', anuncio_id=anuncio.id) }}" class="card-image-link">
+                        {% if anuncio.imagem %}
+                            <img src="{{ url_for('static', filename='imagens/' ~ anuncio.imagem) }}" alt="{{ anuncio.titulo }}" class="card-image">
+                        {% else %}
+                            <div class="card-image card-image-placeholder">
+                                <span>📦</span>
+                                <small>Sem imagem</small>
+                            </div>
+                        {% endif %}
+                        <span class="announcement-type type-{{ anuncio.tipo }}">{{ anuncio.tipo|capitalize }}</span>
+                    </a>
+
+                    <div class="card-body">
+                        <div class="card-topline">
+                            <span class="card-category">Objeto {{ anuncio.tipo }}</span>
+                            <span class="status-badge status-{{ anuncio.estado }}">
+                                {% if anuncio.estado == 'em_andamento' %}
+                                    Em andamento
+                                {% else %}
+                                    {{ anuncio.estado|capitalize }}
+                                {% endif %}
+                            </span>
+                        </div>
+
+                        <h3><a href="{{ url_for('anuncio', anuncio_id=anuncio.id) }}">{{ anuncio.titulo }}</a></h3>
+                        <p class="card-description">{{ anuncio.descricao|truncate(115, True, '...') }}</p>
+
+                        <div class="card-meta">
+                            <span>📍 {{ anuncio.local }}</span>
+                            <span>📅 {{ anuncio.data_ocorrencia.strftime('%d/%m/%Y') }}</span>
+                        </div>
+
+                        <div class="card-footer">
+                            <span class="card-owner">Publicado pela comunidade</span>
+
+                            {% if utilizador_atual and utilizador_atual.id == anuncio.dono_id %}
+                                <div class="owner-actions">
+                                    <a href="{{ url_for('anuncio', anuncio_id=anuncio.id) }}" class="card-action">Ver</a>
+                                    <a href="{{ url_for('editar_anuncio', anuncio_id=anuncio.id) }}" class="card-action">Editar</a>
+
+                                    <!-- BOTÃO QUE ABRE O MODAL -->
+                                    <a href="#confirmacao-{{ anuncio.id }}" class="card-action danger-link">Eliminar</a>
+                                </div>
+                            {% elif utilizador_atual %}
+                                <a href="{{ url_for('contactar_dono', anuncio_id=anuncio.id) }}" class="card-action">Contactar</a>
+                            {% else %}
+                                <a href="{{ url_for('login') }}" class="card-action">Iniciar sessão</a>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- MODAL DE ELIMINAR -->
+                    <div id="confirmacao-{{ anuncio.id }}" class="modal-overlay">
+                        <div class="confirm-modal">
+                            <h2>Eliminar anúncio?</h2>
+                            <p>Tens a certeza de que queres eliminar este anúncio?</p>
+
+                            <div class="modal-actions">
+                                <a class="modal-button cancel-button" href="#">Cancelar</a>
+
+                                <form method="POST" action="{{ url_for('eliminar_anuncio', anuncio_id=anuncio.id) }}">
+                                    <button type="submit" class="modal-button delete-button">Eliminar</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                </article>
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+        <div class="empty-state">
+            <div class="empty-icon">🔎</div>
+            <h3>Ainda não existem anúncios</h3>
+            <p>Sê a primeira pessoa a publicar um objeto perdido ou encontrado.</p>
+            {% if utilizador_atual %}
+                <a href="{{ url_for('criar_anuncio') }}" class="button button-primary">Criar primeiro anúncio</a>
+            {% else %}
+                <a href="{{ url_for('registar') }}" class="button button-primary">Criar conta</a>
+            {% endif %}
+        </div>
+    {% endif %}
+</section>
+
+{% endblock %}
